@@ -1,8 +1,7 @@
-const express = require('express');
 require('./config/mongodb.connect')
+const express = require('express');
+const local_env = require('./config/default')
 
 const app = express();
-const hostname = "127.0.0.1";
-const port = 3000
 
-app.listen(port, hostname, () => console.log(`Server running at http://${hostname}:${port}/`));
+app.listen(local_env.port, local_env.hostname, () => console.log(`Server running at http://${local_env.hostname}:${local_env.port}/`));
