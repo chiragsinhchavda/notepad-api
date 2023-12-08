@@ -1,15 +1,22 @@
 require('./config/mongodb.connect')
 const express = require('express');
-const local_env = require('./config/default')
+const LOCAL = require('./config/default')
+const rootRoutes = require('./server/route/root.route')
 const notepadRoutes = require('./server/route/notepad.route')
+const authRoutes = require('./server/route/auth.route')
 const cors = require('cors');
 
 const app = express();
-app.use(cors({
-    origin: '*'
-}));
+app.use(express.json(), cors({ origin: '*' }));
 
-app.use('/api',notepadRoutes)
+app.use('', rootRoutes)
+app.use('/api', notepadRoutes)
+app.use('/auth', authRoutes)
 
-
-app.listen(local_env.port, local_env.hostname, () => console.log(`Server running at http://${local_env.hostname}:${local_env.port}`));
+app.listen(LOCAL.PORT, LOCAL.HOST_NAME, (error) => {
+	if (error) {
+		console.log(`Error occurred, server can't start : `, error)
+	} else {
+		console.log(`Server running at ${LOCAL.constants.BASE_URI}`)
+	}
+});
